@@ -9,12 +9,12 @@ var r20 = /%20/g,
 	// #7653, #8125, #8152: local protocol detection
 	rlocalProtocol = /^(?:about|app|app\-storage|.+\-extension|file|res|widget):$/,
 	rnoContent = /^(?:GET|HEAD)$/,
-	rprotocol = /^\/\//,
+	rprotocol = /^\u002f\u002f/,
 	rquery = /\?/,
 	rscript = /<script\b[^<]*(?:(?!<\/script>)<[^<]*)*<\/script>/gi,
 	rselectTextarea = /^(?:select|textarea)/i,
 	rspacesAjax = /\s+/,
-	rts = /([?&])_=[^&]*/,
+	rts = /([?&])_=[^&]\u002a/,
 	rurl = /^([\w\+\.\-]+:)(?:\/\/([^\/?#:]*)(?::(\d+))?)?/,
 
 	// Keep a copy of the old load method
@@ -45,7 +45,7 @@ var r20 = /%20/g,
 	ajaxLocParts,
 
 	// Avoid comment-prolog char sequence (#10098); must appease lint and evade compression
-	allTypes = ["*/"] + ["*"];
+	allTypes = ["*"] + ["/"] + ["*"];
 
 // #8138, IE may throw an exception when accessing
 // a field from window.location if document.domain has been set
@@ -618,7 +618,7 @@ jQuery.extend({
 		// Remove hash character (#7531: and string promotion)
 		// Add protocol if not provided (#5866: IE7 issue with protocol-less urls)
 		// We also use the url parameter if available
-		s.url = ( ( url || s.url ) + "" ).replace( rhash, "" ).replace( rprotocol, ajaxLocParts[ 1 ] + "//" );
+		s.url = ( ( url || s.url ) + "" ).replace( rhash, "" ).replace( rprotocol, ajaxLocParts[ 1 ] + "/".concat("/") );
 
 		// Extract dataTypes list
 		s.dataTypes = jQuery.trim( s.dataType || "*" ).toLowerCase().split( rspacesAjax );
